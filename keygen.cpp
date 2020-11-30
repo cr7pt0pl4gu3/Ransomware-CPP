@@ -1,5 +1,6 @@
 #include <random>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -89,4 +90,23 @@ string ntt(char* t) {
                 o += comb[1];
     }
     return o;
+}
+
+int main() {
+    string key = keygen(16);
+    cout << "Key -> " << key << "\n";
+
+    char *key_char = new char[key.length() + 1];
+    strcpy(key_char, key.c_str());
+    key = ttn(key_char);
+
+    cout << "Number key -> " << key << "\n";
+
+    char *key_num = new char[key.length() + 1];
+    strcpy(key_num, key.c_str());
+    key = ntt(key_num);
+
+    cout << "Text key -> " << key << "\n";
+
+    return 0;
 }

@@ -3,4 +3,6 @@ project(Ransomware_C__)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Ransomware_C__ main.cpp keygen.cpp aes256.hpp aes256.cpp encrypt.cpp decrypt.cpp)
+add_executable(keygen keygen.cpp)
+add_executable(encrypt encrypt.cpp)
+add_executable(decrypt decrypt.cpp)
